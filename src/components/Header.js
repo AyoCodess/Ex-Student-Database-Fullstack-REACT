@@ -7,7 +7,7 @@ export const Header = () => {
     <header>
       <>
         <div className='flex justify-between items-center mt-2'>
-          <h1 className='text-center text-2xl'>School Manger App</h1>
+          <h1 className='text-center text-2xl'>School Manager App</h1>
           <Logo />
         </div>
         <div className='mt-2'>

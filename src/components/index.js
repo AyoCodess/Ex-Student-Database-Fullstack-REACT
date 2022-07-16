@@ -7,3 +7,5 @@ export * from './List';
 export * from './Pagination';
 export * from './Main';
 export * from './Footer';
+export * from './LoadingSpinner';
+export * from './Modal';

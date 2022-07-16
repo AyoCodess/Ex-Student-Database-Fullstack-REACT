@@ -1,12 +1,29 @@
 import './App.css';
-import { Header, Main, Wrapper, Footer } from './components';
+import React, { useContext } from 'react';
+import {
+  Header,
+  Main,
+  Wrapper,
+  Footer,
+  LoadingSpinner,
+  Modal,
+} from './components';
+import { DataContext } from './Context';
 
 const App = () => {
+  const { isLoading } = useContext(DataContext);
+
   return (
     <Wrapper>
-      <Header />
-      <Main />
-      <Footer />
+      {isLoading && <LoadingSpinner />}
+      {!isLoading && (
+        <>
+          <Header />
+          <Main />
+          <Footer />
+        </>
+      )}
+      <Modal />
     </Wrapper>
   );
 };
