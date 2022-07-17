@@ -8,9 +8,7 @@ export const Footer = () => {
     <footer className='mt-auto'>
       {/* //. on the todo list */}
       {/* <Pagination /> */}
-      <div className='p-4  text-center text-gray-500'>
-        Created by Ayo Adesanya
-      </div>
+      <p className='p-4  text-center text-gray-500'>Created by Ayo Adesanya</p>
       <div className='flex gap-2 justify-center mb-5'>
         <SocialIcon url='https://www.linkedin.com/in/ayoadesanya/' />
         <SocialIcon url='https://github.com/AyoCodess' />
