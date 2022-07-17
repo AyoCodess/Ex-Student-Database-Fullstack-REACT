@@ -10,7 +10,7 @@ A collection of schools want a web application to help them manage the contact i
 
 ### Tech Stack
 
-1. React, Tailwind CSS, Tailwind UI, Headless UI React-spinner and Axios.
+React, Tailwind CSS, Tailwind UI, Headless UI React-spinner and Axios.
 
 ### Approach
 
