@@ -185,6 +185,10 @@ export const Modal = () => {
                   className='text-2xl leading-6 font-medium text-gray-900'>
                   {modalTitle}
                 </Dialog.Title>
+                <p className='my-2 text-sm'>
+                  Empty fields are not allowed and date must be correctly
+                  formatted.
+                </p>
                 <div>
                   <div className='mt-4  flex flex-col gap-2  rounded-full '>
                     {modalTitle === 'Add Student' && (
@@ -209,7 +213,7 @@ export const Modal = () => {
                       onChange={(e) => setLastName(e.target.value)}
                     />
                     <Input
-                      placeholder={'DOB: dd/mm/yyyy'}
+                      placeholder={'dd/mm/yyyy'}
                       onBlur={(e) => {
                         setDateOfBirth(e.target.value);
                       }}
