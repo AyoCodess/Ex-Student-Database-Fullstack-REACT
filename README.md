@@ -6,11 +6,11 @@ https://student-database-ayocodes.netlify.app/
 
 ### About
 
-A collection of schools want a web application to help them manage the contact information they hold on ex-students.
+A collection of schools want a web application to help them manage the contact information they hold on ex-students
 
 ### Tech Stack
 
-React, Tailwind CSS, Tailwind UI, Headless UI React-spinner and Axios.
+React, Tailwind CSS, Tailwind UI, Headless UI React-spinner and Axios
 
 ### Approach
 
@@ -41,14 +41,15 @@ React, Tailwind CSS, Tailwind UI, Headless UI React-spinner and Axios.
 
 ### What could be improved
 
-1. Input field error validation alerts, i.e if a user enters a number instead of a string, they should get feedback right away. right now we have a simple toast alert and console errors.
-2. Add list sorting buttons. i.e sort by name ascending, descending and school
+1. Input field error validation alerts, i.e if a user enters a number instead of a string, they should get feedback right away. right now we have a simple toast alert and console errors
+2. Add list sorting buttons i.e sort by name ascending, descending and school
 3. Add pagination
 4. Add cooler loading states
-5. Cache api data if nothing has been changed on the front end.
-6. When updating a student their current details should populate in the form.
-7. Implement one function with params for all API requests, so we can add several different error states and UI depending on the fetch request that failed, this will also reduce lines of code significantly and keep the code clean.
-8. Refactor code, could be streamlined.
+5. Cache api data if nothing has been changed on the front end
+6. When updating a student their current details should populate in the form
+7. Implement one function with params for all API requests, so we can add several different error states and UI depending on the fetch request that failed, this will also reduce lines of code significantly and keep the code clean
+8. Refactor code, could be streamlined
+9. Ability to hide contact rows
 
 ### My Experience
 
