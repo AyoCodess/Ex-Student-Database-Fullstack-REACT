@@ -12,3 +12,4 @@ export * from './Modal';
 export * from './Input';
 export * from './InputDisplayOnly';
 export * from './Toast';
+export * from './ApiFailed';

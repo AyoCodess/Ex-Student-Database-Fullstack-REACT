@@ -8,16 +8,18 @@ import {
   LoadingSpinner,
   Modal,
   Toast,
+  ApiFailed,
 } from './components';
 import { DataContext } from './Context';
 
 const App = () => {
-  const { isLoading } = useContext(DataContext);
+  const { isLoading, isApiAlive } = useContext(DataContext);
 
   return (
     <Wrapper>
-      {isLoading && <LoadingSpinner />}
-      {!isLoading && (
+      {!isLoading && isApiAlive && <ApiFailed />}
+      {isLoading && !isApiAlive && <LoadingSpinner />}
+      {!isLoading && !isApiAlive && (
         <>
           <Header />
           <Main />

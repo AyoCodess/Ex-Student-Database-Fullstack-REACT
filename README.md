@@ -30,6 +30,7 @@ A collection of schools want a web application to help them manage the contact i
 4. Update details of existing contacts
 5. Contact count
 6. Loading states
+7. If API fails on get request to fetch all contacts, we get an error.
 
 ### Other features
 
@@ -47,6 +48,7 @@ A collection of schools want a web application to help them manage the contact i
 5. Cache api data if nothing has changed on the front end.
 6. Refactor code, could be streamlined.
 7. When updating a student, their current details should populate in the form.
+8. Implement one function with params for all API requests, so we can add several different error states and UI depending on the fetch request that failed, this will also reduce lines of code significantly and keep the code clean.
 
 ### My Experience
 

@@ -5,6 +5,7 @@ export const DataContext = createContext({});
 export const DataProvider = ({ children }) => {
   const [defaultDatabase, setDefaultDatabase] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isApiAlive, setIsApiAlive] = useState();
   const [searchInput, setSearchInput] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [newStudentData, setNewStudentData] = useState({});
@@ -44,7 +45,7 @@ export const DataProvider = ({ children }) => {
 
   const fetchDatabase = async () => {
     const api = 'https://interview-practical.azurewebsites.net/api/contacts';
-
+    setIsApiAlive(false);
     try {
       const response = await axios(api);
       const data = response;
@@ -55,6 +56,8 @@ export const DataProvider = ({ children }) => {
 
       setIsLoading(false);
     } catch (err) {
+      setIsApiAlive(true);
+      setIsLoading(false);
       console.error('FAILED TO FETCH DATABASE', err);
     }
   };
@@ -88,6 +91,8 @@ export const DataProvider = ({ children }) => {
         transformData,
         showToast,
         setShowToast,
+        isApiAlive,
+        setIsApiAlive,
       }}>
       {children}
     </DataContext.Provider>
