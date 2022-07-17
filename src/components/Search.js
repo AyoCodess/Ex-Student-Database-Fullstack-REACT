@@ -1,16 +1,9 @@
-import { data } from 'autoprefixer';
 import React, { useContext } from 'react';
 import { DataContext } from '../Context';
 
 export const Search = () => {
-  const {
-    database,
-    setDatabase,
-    defaultDatabase,
-    setDefaultDatabase,
-    searchInput,
-    setSearchInput,
-  } = useContext(DataContext);
+  const { defaultDatabase, setDefaultDatabase, searchInput, setSearchInput } =
+    useContext(DataContext);
 
   const handleSearch = (searchTerm) => {
     const filtered = defaultDatabase.filter((student) => {
@@ -19,16 +12,21 @@ export const Search = () => {
       });
     });
 
-    console.log('res', filtered);
     setDefaultDatabase(filtered);
   };
 
   return (
-    <div>
+    <div className='flex justify-center gap-5'>
+      {defaultDatabase && (
+        <div className=' hidden sm:inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
+          {defaultDatabase.length} Contacts
+        </div>
+      )}
+
       <input
         type='text'
-        className='shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2 block w-full sm:text-sm border border-gray-300 rounded-md truncate'
-        placeholder='Search by Name, Phone and DOB'
+        className='shadow-sm sm:w-2/3  focus:ring-blue-500 focus:border-blue-500 p-2 block w-full sm:text-sm border border-gray-300 rounded-md truncate'
+        placeholder='Search by Name, School, Phone and DOB'
         value={searchInput}
         onChange={(e) => {
           setSearchInput(e.target.value);

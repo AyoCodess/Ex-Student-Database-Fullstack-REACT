@@ -4,10 +4,13 @@ import { Logo } from './Logo';
 
 export const Header = () => {
   return (
-    <header>
+    <header className='sm:mx-10 mx-1'>
       <>
         <div className='flex justify-between items-center mt-2'>
-          <h1 className='text-center text-2xl'>School Manager App</h1>
+          <h1 className='text-center text-2xl'>
+            <span className='font-extrabold'>South Region</span> Ex-Student
+            Database
+          </h1>
           <Logo />
         </div>
         <div className='mt-2'>

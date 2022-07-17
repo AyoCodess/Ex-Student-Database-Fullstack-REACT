@@ -7,6 +7,7 @@ import {
   Footer,
   LoadingSpinner,
   Modal,
+  Toast,
 } from './components';
 import { DataContext } from './Context';
 
@@ -24,6 +25,7 @@ const App = () => {
         </>
       )}
       <Modal />
+      <Toast />
     </Wrapper>
   );
 };
