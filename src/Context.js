@@ -81,38 +81,15 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const fetchDatabase = async () => {
-    // const api = 'https://interview-practical.azurewebsites.net/api/contacts';
-    // setIsApiAlive(false);
-    try {
-      const response = await axios(apiUrl);
-
-      console.log('res', response);
-      const data = response;
-
-      if (data) {
-        setDefaultDatabase(transformData(data.data));
-      }
-
-      setIsLoading(false);
-    } catch (err) {
-      //   setIsApiAlive(true);
-      setIsLoading(false);
-      console.error('FAILED TO FETCH DATABASE', err);
-    }
-  };
-
   useEffect(() => {
     setIsLoading(true);
-    fetchDatabase();
-
-    // apiRequest(
-    //   'GET',
-    //   apiUrl,
-    //   setDefaultDatabase,
-    //   'FAILED TO FETCH DATABASE',
-    //   setIsApiAlive
-    // );
+    apiRequest(
+      'GET',
+      apiUrl,
+      setDefaultDatabase,
+      'FAILED TO FETCH DATABASE',
+      setIsApiAlive
+    );
   }, []);
   return (
     <DataContext.Provider
@@ -135,7 +112,6 @@ export const DataProvider = ({ children }) => {
         currentSelectedStudentID,
         setCurrentSelectedStudentID,
         setID,
-        fetchDatabase,
         transformData,
         showToast,
         setShowToast,
