@@ -28,6 +28,8 @@ export const DataProvider = ({ children }) => {
   const dateRegEx =
     /(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)/;
 
+  const apiUrl = 'http://localhost:3004/api/contacts';
+
   const transformData = (array) => {
     const data = array.map((person) => {
       return {
@@ -43,28 +45,51 @@ export const DataProvider = ({ children }) => {
     return data;
   };
 
-  const fetchDatabase = async () => {
-    const api = 'https://interview-practical.azurewebsites.net/api/contacts';
-    setIsApiAlive(false);
-    try {
-      const response = await axios(api);
-      const data = response;
+  const apiRequest = async (
+    method,
+    apiRoute,
+    setData,
+    errorMessage,
+    setError
+  ) => {
+    // const api = 'https://interview-practical.azurewebsites.net/api/contacts';
+    setError(false);
 
-      if (data) {
-        setDefaultDatabase(transformData(data.data));
+    try {
+      let response;
+      if (method === 'GET') {
+        response = await axios.get(apiRoute);
+
+        const data = response;
+
+        if (data) {
+          setData(transformData(data.data));
+        }
       }
+
+      if (method === 'POST') {
+        response = await axios.post(apiRoute);
+      }
+
+      console.log('the fetch response', response);
 
       setIsLoading(false);
     } catch (err) {
-      setIsApiAlive(true);
+      setError(true);
       setIsLoading(false);
-      console.error('FAILED TO FETCH DATABASE', err);
+      console.error(errorMessage, err);
     }
   };
 
   useEffect(() => {
     setIsLoading(true);
-    fetchDatabase();
+    apiRequest(
+      'GET',
+      apiUrl,
+      setDefaultDatabase,
+      'FAILED TO FETCH DATABASE',
+      setIsApiAlive
+    );
   }, []);
   return (
     <DataContext.Provider
@@ -87,12 +112,12 @@ export const DataProvider = ({ children }) => {
         currentSelectedStudentID,
         setCurrentSelectedStudentID,
         setID,
-        fetchDatabase,
         transformData,
         showToast,
         setShowToast,
         isApiAlive,
         setIsApiAlive,
+        apiRequest,
       }}>
       {children}
     </DataContext.Provider>
