@@ -1,5 +1,5 @@
 {
-  "name": "school-manager",
+  "name": "ex-student-database",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -44,5 +44,17 @@
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",
     "tailwindcss": "^3.1.6"
-  }
+  },
+  "description": "### Live link",
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://AyoCodess@github.com/AyoCodess/School-Manager-Client-REACT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AyoCodess/School-Manager-Client-REACT/issues"
+  },
+  "homepage": "https://github.com/AyoCodess/School-Manager-Client-REACT#readme"
 }

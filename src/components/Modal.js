@@ -92,11 +92,13 @@ export const Modal = () => {
 
   const addStudentToDatabase = async () => {
     // console.log('new student data', newStudentData);
-    const postApi =
-      'https://interview-practical.azurewebsites.net/api/contacts';
+    // const postApi =
+    //   'https://interview-practical.azurewebsites.net/api/contacts';
+    const postApi = 'https://localhost:3004/api/contacts';
 
     try {
-      const response = await axios.put(postApi, newStudentData);
+      //   const response = await axios.put(postApi, newStudentData);
+      const response = await axios.post(postApi, newStudentData);
       const { data } = response;
 
       if (response.statusText === 'OK') {
