@@ -18,26 +18,27 @@ export const List = () => {
 
     setIsLoading,
     transformData,
+    apiRequest,
   } = useContext(DataContext);
 
-  const resetDatabase = async () => {
-    setIsLoading(true);
-    try {
-      const api = `https://interview-practical.azurewebsites.net/api/Contacts/reset`;
+  //   const resetDatabase = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const api = `https://interview-practical.azurewebsites.net/api/Contacts/reset`;
 
-      const response = await axios.post(api, {
-        headers: {
-          Accept: 'text/plain',
-        },
-      });
-      const { data } = response;
+  //       const response = await axios.post(api, {
+  //         headers: {
+  //           Accept: 'text/plain',
+  //         },
+  //       });
+  //       const { data } = response;
 
-      if (response.statusText === 'OK') setDefaultDatabase(transformData(data));
-      setIsLoading(false);
-    } catch (err) {
-      console.error('FAILED TO RESET DATABASE', err);
-    }
-  };
+  //       if (response.statusText === 'OK') setDefaultDatabase(transformData(data));
+  //       setIsLoading(false);
+  //     } catch (err) {
+  //       console.error('FAILED TO RESET DATABASE', err);
+  //     }
+  //   };
 
   const deleteStudent = async (id) => {
     try {
@@ -86,7 +87,15 @@ export const List = () => {
               <button
                 type='button'
                 onClick={() => {
-                  resetDatabase();
+                  apiRequest(
+                    'GET',
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    'RESET'
+                  );
                   setSearchInput('');
                 }}
                 className='inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto'>

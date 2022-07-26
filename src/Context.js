@@ -14,15 +14,13 @@ export const DataProvider = ({ children }) => {
   const [currentSelectedStudentID, setCurrentSelectedStudentID] = useState(0);
   const [showToast, setShowToast] = useState(false);
 
-  console.log('HEY');
-
   //. sets user id of selected student currently being updated
   const setID = () => {
     if (defaultDatabase) {
       setNewStudentData((prev) => {
         return {
           ...prev,
-          id: defaultDatabase.length + 1,
+          id: defaultDatabase.length,
         };
       });
     }
@@ -49,9 +47,8 @@ export const DataProvider = ({ children }) => {
     return data;
   };
 
-  //. adding new student to database
+  //. ADDING new student to database
   const addNewStudent = () => {
-    // setID(defaultDatabase.length + 1);
     setShowModal(false);
     const checkingForEmptyFields = () => {
       let arr = Object.values(newStudentData);
@@ -61,14 +58,17 @@ export const DataProvider = ({ children }) => {
         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
       } else {
         console.log('in post...');
-        apiRequest('POST');
+        apiRequest('POST', undefined, undefined, undefined, undefined, {
+          id: defaultDatabase.length,
+          ...newStudentData,
+        });
       }
     };
 
     checkingForEmptyFields();
   };
 
-  //. updating current student details on database
+  //. UPDATING current student details on database
   const updateStudent = () => {
     setShowModal(false);
 
@@ -79,15 +79,7 @@ export const DataProvider = ({ children }) => {
         setShowToast(true);
         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
       } else {
-        console.log(newStudentData);
-        apiRequest(
-          'PUT',
-          apiUrl,
-          undefined,
-          undefined,
-          undefined,
-          newStudentData
-        );
+        apiRequest('PUT', newStudentData);
       }
     };
     checkingForEmptyFields();
@@ -100,7 +92,8 @@ export const DataProvider = ({ children }) => {
     setData = setDefaultDatabase,
     setError = setIsApiAlive,
     id = 0,
-    obj = newStudentData
+    obj = newStudentData,
+    type
   ) => {
     setError(false);
     let response;
@@ -131,13 +124,8 @@ export const DataProvider = ({ children }) => {
 
         console.log('the data', data);
         if (response.statusText === 'OK') {
-          setData((prev) => {
-            return [...prev, data];
-          });
-        } else {
-          console.error('FAIL REQUEST');
+          setData(data);
         }
-
         setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
@@ -186,6 +174,24 @@ export const DataProvider = ({ children }) => {
       setIsLoading(false);
       setError(true);
       console.error('FAILED TO DELETE STUDENT', err);
+    }
+
+    //. RESET DATABASE
+    if (method === 'GET' && type === 'RESET') {
+      try {
+        setIsLoading(true);
+        response = await axios.get(`${apiRoute}/reset`);
+        const { data } = response;
+
+        if (response.statusText === 'OK') {
+          setData(data);
+        }
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        setError(true);
+        console.error('FAILED TO POST NEW STUDENT TO DATABASE');
+      }
     }
   };
 

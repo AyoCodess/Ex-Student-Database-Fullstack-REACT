@@ -198,8 +198,8 @@ export const Modal = () => {
                   <div className='mt-4  flex flex-col gap-2  rounded-full '>
                     {modalTitle === 'Add Student' && (
                       <InputDisplayOnly
-                        defaultValue={defaultDatabase.length + 1}
-                        // onBlur={() => setID()}
+                        defaultValue={defaultDatabase.length}
+                        onBlur={() => setID()}
                       />
                     )}
                     {modalTitle === 'Update Student' &&

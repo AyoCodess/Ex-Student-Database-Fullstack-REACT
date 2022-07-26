@@ -6,8 +6,8 @@ import { Contacts, DefaultContacts } from './Contacts.js';
 const app = express();
 const port = process.env.PORT || 3004;
 app.use(cors());
-// app.use(express.json());
-let currentContacts = DefaultContacts;
+app.use(express.json());
+let currentContacts;
 
 // - landing page + meta data
 app.get(`/`, (req, res) => {
@@ -74,6 +74,10 @@ app.get(`/`, (req, res) => {
 
 // - GET all contacts
 app.get(`/api/contacts/`, async (req, res) => {
+  if (currentContacts === undefined) {
+    currentContacts = DefaultContacts;
+  }
+
   res.json(currentContacts);
 });
 
@@ -97,16 +101,11 @@ app.post(`/api/contacts/`, async (req, res) => {
   console.log(req);
   const data = req.body;
 
-  const newContactsDatabase = [
-    ...DefaultContacts,
-    { id: DefaultContacts.length + 1, ...data },
-  ];
-
-  currentContacts = newContactsDatabase;
-
-  res.json(currentContacts);
-
-  console.log('the data', data);
+  if (currentContacts) {
+    const newContactsDatabase = [...currentContacts, { ...data }];
+    currentContacts = newContactsDatabase;
+    res.json(currentContacts);
+  }
 });
 
 app.get('*', (req, res) => {
