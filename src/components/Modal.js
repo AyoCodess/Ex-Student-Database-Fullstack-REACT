@@ -12,11 +12,10 @@ export const Modal = () => {
     setNewStudentData,
     modalTitle,
     dateRegEx,
-    currentSelectedStudentID,
-    setID,
     updateStudent,
     addNewStudent,
     defaultDatabase,
+    currentSelectedUser,
   } = useContext(DataContext);
 
   //. adding new student form input data
@@ -100,44 +99,49 @@ export const Modal = () => {
                   {modalTitle}
                 </Dialog.Title>
                 <p className='my-2 text-sm'>
-                  Empty fields are not allowed and date must be correctly
-                  formatted.
+                  You must re-enter all data, empty fields are not allowed and
+                  date must be correctly formatted.
                 </p>
                 <div>
                   <div className='mt-4  flex flex-col gap-2  rounded-full '>
                     {modalTitle === 'Add Student' && (
                       <InputDisplayOnly
-                        defaultValue={defaultDatabase.length}
-                        onBlur={() => setID()}
+                        defaultValue={
+                          defaultDatabase[defaultDatabase.length - 1].id + 1
+                        }
                       />
                     )}
                     {modalTitle === 'Update Student' &&
-                      currentSelectedStudentID && (
+                      currentSelectedUser.id && (
                         <InputDisplayOnly
-                          defaultValue={currentSelectedStudentID}
-                          onBlur={() => setID()}
+                          defaultValue={currentSelectedUser.id}
                         />
                       )}
                     <Input
-                      placeholder={'First Name'}
+                      placeholder={
+                        currentSelectedUser?.firstName || 'First Name'
+                      }
                       onChange={(e) => setFirstName(e.target.value)}
                     />
                     <Input
-                      placeholder={'Last Name'}
+                      placeholder={currentSelectedUser?.lastName || 'Last Name'}
                       onChange={(e) => setLastName(e.target.value)}
                     />
                     <Input
-                      placeholder={'dd/mm/yyyy'}
+                      placeholder={
+                        currentSelectedUser?.dateOfBirth + ' (dd/mm/yyyy)' ||
+                        'dd/mm/yyyy'
+                      }
                       onBlur={(e) => {
                         setDateOfBirth(e.target.value);
                       }}
                     />
                     <Input
-                      placeholder={'School'}
+                      placeholder={currentSelectedUser?.school || 'School'}
                       onChange={(e) => setSchool(e.target.value)}
                     />
                     <Input
-                      placeholder={'Phone Number'}
+                      placeholder={currentSelectedUser?.phone || 'Phone'}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                     />
                   </div>

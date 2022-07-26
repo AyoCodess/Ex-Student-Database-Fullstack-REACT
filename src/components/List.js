@@ -1,60 +1,16 @@
 import React from 'react';
 import { useContext } from 'react';
 import { DataContext } from '../Context';
-import axios from 'axios';
 
 export const List = () => {
   const {
     defaultDatabase,
-    setDefaultDatabase,
     setSearchInput,
     setShowModal,
-
     setModalTitle,
-    setUpdateStudentId,
-    setCurrentSelectedStudentID,
-
-    setID,
-    updateStudent,
-    setIsLoading,
-    transformData,
     apiRequest,
+    setCurrentSelectedUser,
   } = useContext(DataContext);
-
-  //   const resetDatabase = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const api = `https://interview-practical.azurewebsites.net/api/Contacts/reset`;
-
-  //       const response = await axios.post(api, {
-  //         headers: {
-  //           Accept: 'text/plain',
-  //         },
-  //       });
-  //       const { data } = response;
-
-  //       if (response.statusText === 'OK') setDefaultDatabase(transformData(data));
-  //       setIsLoading(false);
-  //     } catch (err) {
-  //       console.error('FAILED TO RESET DATABASE', err);
-  //     }
-  //   };
-
-  const deleteStudent = async (id) => {
-    try {
-      const postApi = `https://interview-practical.azurewebsites.net/api/Contacts?id=${id}`;
-      const response = await axios.delete(postApi);
-
-      if (response.statusText === 'OK') {
-        setDefaultDatabase((prev) => {
-          let data = prev.filter((user) => id !== user.id);
-          return data;
-        });
-      }
-    } catch (err) {
-      console.error('FAILED TO DELETE STUDENT', err);
-    }
-  };
 
   return (
     <>
@@ -167,10 +123,9 @@ export const List = () => {
                       <td className=' py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
                         <div
                           onClick={() => {
-                            setCurrentSelectedStudentID(person.id);
                             setShowModal(true);
                             setModalTitle('Update Student');
-                            setUpdateStudentId(person.id);
+                            setCurrentSelectedUser(person);
                           }}
                           className='text-blue-600 hover:text-blue-900'>
                           Edit<span className='sr-only'>, {person.name}</span>

@@ -10,21 +10,8 @@ export const DataProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [newStudentData, setNewStudentData] = useState({});
   const [modalTitle, setModalTitle] = useState({});
-  const [updateStudentId, setUpdateStudentId] = useState();
-  const [currentSelectedStudentID, setCurrentSelectedStudentID] = useState(0);
+  const [currentSelectedUser, setCurrentSelectedUser] = useState();
   const [showToast, setShowToast] = useState(false);
-
-  //. sets user id of selected student currently being updated
-  const setID = () => {
-    if (defaultDatabase) {
-      setNewStudentData((prev) => {
-        return {
-          ...prev,
-          id: defaultDatabase.length,
-        };
-      });
-    }
-  };
 
   //. checks for dd/MM/yyyy
   const dateRegEx =
@@ -58,7 +45,7 @@ export const DataProvider = ({ children }) => {
         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
       } else {
         apiRequest('POST', undefined, undefined, undefined, undefined, {
-          id: defaultDatabase.length,
+          id: defaultDatabase[defaultDatabase.length - 1].id + 1,
           ...newStudentData,
         });
       }
@@ -70,9 +57,8 @@ export const DataProvider = ({ children }) => {
   //. UPDATING current student details on database
   const updateStudent = () => {
     setShowModal(false);
-
     const checkingForEmptyFields = () => {
-      let arr = Object.values({ ...newStudentData, currentSelectedStudentID });
+      let arr = Object.values({ ...newStudentData, currentSelectedUser });
       if (arr.length < 6) {
         //- add alert modal here
         setShowToast(true);
@@ -83,7 +69,7 @@ export const DataProvider = ({ children }) => {
           undefined,
           undefined,
           undefined,
-          currentSelectedStudentID
+          currentSelectedUser.id
         );
       }
     };
@@ -151,7 +137,7 @@ export const DataProvider = ({ children }) => {
           headers: {
             'Content-type': 'application/json',
           },
-          body: JSON.stringify({ id: currentSelectedStudentID, ...obj }),
+          body: JSON.stringify({ id: currentSelectedUser.id, ...obj }),
         });
 
         const data = await response.json();
@@ -179,7 +165,7 @@ export const DataProvider = ({ children }) => {
         console.log(data);
 
         if (response.statusText === 'OK') {
-          setData(data);
+          setData(transformData(data));
         }
       }
       setIsLoading(false);
@@ -227,12 +213,7 @@ export const DataProvider = ({ children }) => {
         setNewStudentData,
         modalTitle,
         setModalTitle,
-        updateStudentId,
-        setUpdateStudentId,
         dateRegEx,
-        currentSelectedStudentID,
-        setCurrentSelectedStudentID,
-        setID,
         transformData,
         showToast,
         setShowToast,
@@ -241,6 +222,8 @@ export const DataProvider = ({ children }) => {
         addNewStudent,
         apiRequest,
         updateStudent,
+        currentSelectedUser,
+        setCurrentSelectedUser,
       }}>
       {children}
     </DataContext.Provider>
