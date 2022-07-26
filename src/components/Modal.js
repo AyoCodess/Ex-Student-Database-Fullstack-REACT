@@ -4,22 +4,16 @@ import { Dialog, Transition } from '@headlessui/react';
 import { DataContext } from '../Context';
 import { Input } from './Input';
 import { InputDisplayOnly } from './InputDisplayOnly';
-import axios from 'axios';
 
 export const Modal = () => {
   const {
     showModal,
     setShowModal,
-    newStudentData,
     setNewStudentData,
-    setDefaultDatabase,
     modalTitle,
     dateRegEx,
     currentSelectedStudentID,
     setID,
-    fetchDatabase,
-    showToast,
-    setShowToast,
     updateStudent,
     addNewStudent,
     defaultDatabase,
@@ -73,91 +67,6 @@ export const Modal = () => {
         phoneNumber,
       };
     });
-  };
-
-  //   //. adding new student to database
-  //   const addNewStudent = () => {
-  //     setID(0);
-  //     setShowModal(false);
-  //     const checkingForEmptyFields = () => {
-  //       let arr = Object.values(newStudentData);
-
-  //       if (arr.length < 6) {
-  //         setShowToast(true);
-  //         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
-  //       } else {
-  //         addStudentToDatabase();
-  //       }
-  //     };
-
-  //     checkingForEmptyFields();
-  //   };
-
-  //   const addStudentToDatabase = async () => {
-  //     // console.log('new student data', newStudentData);
-  //     // const postApi =
-  //     //   'https://interview-practical.azurewebsites.net/api/contacts';
-  //     const postApi = 'https://localhost:3004/api/contacts';
-
-  //     try {
-  //       //   const response = await axios.put(postApi, newStudentData);
-  //       const response = await axios.post(postApi, newStudentData);
-  //       const { data } = response;
-
-  //       if (response.statusText === 'OK') {
-  //         setDefaultDatabase((prev) => {
-  //           return [...prev, data];
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.error('FAILED TO POST NEW STUDENT TO DATABASE');
-  //     }
-
-  //     setNewStudentData({});
-  //   };
-
-  //. updating current student details on database
-  //   const updateStudent = () => {
-  //     setShowModal(false);
-
-  //     const checkingForEmptyFields = () => {
-  //       let arr = Object.values({ ...newStudentData, currentSelectedStudentID });
-  //       if (arr.length < 6) {
-  //         //- add alert modal here
-  //         setShowToast(true);
-  //         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
-  //       } else {
-  //         updateStudentInDatabase();
-  //       }
-  //     };
-
-  //     checkingForEmptyFields();
-  //     setNewStudentData({});
-  //   };
-
-  const updateStudentInDatabase = async () => {
-    // console.log('new student data', newStudentData);
-    try {
-      const postApi =
-        'https://interview-practical.azurewebsites.net/api/Contacts';
-
-      const stringObj = JSON.stringify(newStudentData);
-
-      //. having issues with axios put, so used fetch.
-      const response = await fetch(postApi, {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: stringObj,
-      });
-
-      if (response.statusText === 'OK') {
-        fetchDatabase();
-      }
-    } catch (err) {
-      console.error('FAILED TO UPDATE STUDENT DETAILS', err);
-    }
   };
 
   return (

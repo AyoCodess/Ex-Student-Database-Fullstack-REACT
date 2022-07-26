@@ -97,8 +97,6 @@ app.get(`/api/contacts/reset`, async (req, res) => {
 
 // - CREATE new contact
 app.post(`/api/contacts/`, async (req, res) => {
-  console.log('received request...');
-  console.log(req);
   const data = req.body;
 
   if (currentContacts) {
@@ -108,14 +106,28 @@ app.post(`/api/contacts/`, async (req, res) => {
   }
 });
 
+// - DELETE contact
 app.delete('/api/contacts/:id', async (req, res) => {
   const id = req.params.id;
-
   currentContacts = currentContacts.filter((user) => Number(id) !== user.id);
-
   res.json(currentContacts);
 });
 
+// - UPDATE contact
+
+app.put('/api/contacts/update/:id', async (req, res) => {
+  const id = req.params.id;
+  const data = req.body;
+  currentContacts = currentContacts.map((user) => {
+    if (Number(id) === user.id) {
+      return { ...data };
+    }
+    return user;
+  });
+  res.json(currentContacts);
+});
+
+// - CATCH ALL
 app.get('*', (req, res) => {
   res.status(404).json({
     status: 'failed',

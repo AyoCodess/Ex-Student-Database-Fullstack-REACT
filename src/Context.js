@@ -57,7 +57,6 @@ export const DataProvider = ({ children }) => {
         setShowToast(true);
         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
       } else {
-        console.log('in post...');
         apiRequest('POST', undefined, undefined, undefined, undefined, {
           id: defaultDatabase.length,
           ...newStudentData,
@@ -79,13 +78,20 @@ export const DataProvider = ({ children }) => {
         setShowToast(true);
         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
       } else {
-        apiRequest('PUT', newStudentData);
+        apiRequest(
+          'PUT',
+          undefined,
+          undefined,
+          undefined,
+          currentSelectedStudentID
+        );
       }
     };
     checkingForEmptyFields();
     setNewStudentData({});
   };
 
+  //. UNIVERSAL FETCH FUNCTION
   const apiRequest = async (
     method,
     apiRoute = apiUrl,
@@ -98,7 +104,7 @@ export const DataProvider = ({ children }) => {
     setError(false);
     let response;
 
-    //.GET
+    //. LOAD DATABASE
     if (method === 'GET') {
       try {
         response = await axios.get(apiRoute);
@@ -116,7 +122,7 @@ export const DataProvider = ({ children }) => {
       }
     }
 
-    //.CREATE
+    //.CREATE NEW CONTACT
     if (method === 'POST') {
       try {
         response = await axios.post(apiRoute, obj);
@@ -124,7 +130,7 @@ export const DataProvider = ({ children }) => {
 
         console.log('the data', data);
         if (response.statusText === 'OK') {
-          setData(data);
+          setData(transformData(data));
         }
         setIsLoading(false);
       } catch (err) {
@@ -134,21 +140,26 @@ export const DataProvider = ({ children }) => {
       }
     }
 
-    //. UPDATE
+    //. UPDATE CONTACT
     try {
       if (method === 'PUT') {
-        const stringObj = JSON.stringify(obj);
+        console.log('updating...');
+        console.log(id);
 
-        const response = await fetch(apiUrl, {
+        const response = await fetch(`${apiUrl}/update/${id}`, {
           method: 'PUT',
           headers: {
             'Content-type': 'application/json',
           },
-          body: stringObj,
+          body: JSON.stringify({ id: currentSelectedStudentID, ...obj }),
         });
 
+        const data = await response.json();
+
+        console.log('the data', data);
+
         if (response.statusText === 'OK') {
-          apiRequest('GET', apiUrl);
+          setData(transformData(data));
         }
       }
     } catch (err) {
@@ -157,7 +168,7 @@ export const DataProvider = ({ children }) => {
       console.error('FAILED TO UPDATE STUDENT DETAILS', err);
     }
 
-    //. DELETE
+    //. DELETE CONTACT
     try {
       if (method === 'DELETE') {
         console.log('in delete...');
@@ -178,7 +189,7 @@ export const DataProvider = ({ children }) => {
       console.error('FAILED TO DELETE STUDENT', err);
     }
 
-    //. RESET DATABASE
+    //. RESET DATABASE TO ORIGINAL STATE
     if (method === 'GET' && type === 'RESET') {
       try {
         setIsLoading(true);
@@ -186,7 +197,7 @@ export const DataProvider = ({ children }) => {
         const { data } = response;
 
         if (response.statusText === 'OK') {
-          setData(data);
+          setData(transformData(data));
         }
         setIsLoading(false);
       } catch (err) {

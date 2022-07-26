@@ -15,7 +15,7 @@ export const List = () => {
     setCurrentSelectedStudentID,
 
     setID,
-
+    updateStudent,
     setIsLoading,
     transformData,
     apiRequest,
@@ -54,14 +54,6 @@ export const List = () => {
     } catch (err) {
       console.error('FAILED TO DELETE STUDENT', err);
     }
-  };
-
-  const editStudent = (id) => {
-    setCurrentSelectedStudentID(id);
-    setShowModal(true);
-    setModalTitle('Update Student');
-    setUpdateStudentId(id);
-    setID(id);
   };
 
   return (
@@ -175,7 +167,10 @@ export const List = () => {
                       <td className=' py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
                         <div
                           onClick={() => {
-                            editStudent(person.id);
+                            setCurrentSelectedStudentID(person.id);
+                            setShowModal(true);
+                            setModalTitle('Update Student');
+                            setUpdateStudentId(person.id);
                           }}
                           className='text-blue-600 hover:text-blue-900'>
                           Edit<span className='sr-only'>, {person.name}</span>
