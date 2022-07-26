@@ -14,14 +14,18 @@ export const DataProvider = ({ children }) => {
   const [currentSelectedStudentID, setCurrentSelectedStudentID] = useState(0);
   const [showToast, setShowToast] = useState(false);
 
+  console.log('HEY');
+
   //. sets user id of selected student currently being updated
-  const setID = (id) => {
-    setNewStudentData((prev) => {
-      return {
-        ...prev,
-        id,
-      };
-    });
+  const setID = () => {
+    if (defaultDatabase) {
+      setNewStudentData((prev) => {
+        return {
+          ...prev,
+          id: defaultDatabase.length + 1,
+        };
+      });
+    }
   };
 
   //. checks for dd/MM/yyyy
@@ -45,51 +49,149 @@ export const DataProvider = ({ children }) => {
     return data;
   };
 
+  //. adding new student to database
+  const addNewStudent = () => {
+    // setID(defaultDatabase.length + 1);
+    setShowModal(false);
+    const checkingForEmptyFields = () => {
+      let arr = Object.values(newStudentData);
+
+      if (arr.length < 5) {
+        setShowToast(true);
+        console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
+      } else {
+        console.log('in post...');
+        apiRequest('POST');
+      }
+    };
+
+    checkingForEmptyFields();
+  };
+
+  //. updating current student details on database
+  const updateStudent = () => {
+    setShowModal(false);
+
+    const checkingForEmptyFields = () => {
+      let arr = Object.values({ ...newStudentData, currentSelectedStudentID });
+      if (arr.length < 6) {
+        //- add alert modal here
+        setShowToast(true);
+        console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
+      } else {
+        console.log(newStudentData);
+        apiRequest(
+          'PUT',
+          apiUrl,
+          undefined,
+          undefined,
+          undefined,
+          newStudentData
+        );
+      }
+    };
+    checkingForEmptyFields();
+    setNewStudentData({});
+  };
+
   const apiRequest = async (
     method,
-    apiRoute,
-    setData,
-    errorMessage,
-    setError
+    apiRoute = apiUrl,
+    setData = setDefaultDatabase,
+    setError = setIsApiAlive,
+    id = 0,
+    obj = newStudentData
   ) => {
-    // const api = 'https://interview-practical.azurewebsites.net/api/contacts';
     setError(false);
+    let response;
 
-    try {
-      let response;
-      if (method === 'GET') {
+    //.GET
+    if (method === 'GET') {
+      try {
         response = await axios.get(apiRoute);
 
-        const data = response;
+        const { data } = response;
 
         if (data) {
-          setData(transformData(data.data));
+          setData(transformData(data));
+        }
+        setIsLoading(false);
+      } catch (err) {
+        setError(true);
+        setIsLoading(false);
+        console.error('FAILED TO FETCH DATABASE', err);
+      }
+    }
+
+    //.CREATE
+    if (method === 'POST') {
+      try {
+        response = await axios.post(apiRoute, obj);
+        const { data } = response;
+
+        console.log('the data', data);
+        if (response.statusText === 'OK') {
+          setData((prev) => {
+            return [...prev, data];
+          });
+        } else {
+          console.error('FAIL REQUEST');
+        }
+
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        setError(true);
+        console.error('FAILED TO POST NEW STUDENT TO DATABASE');
+      }
+    }
+
+    //. UPDATE
+    try {
+      if (method === 'PUT') {
+        const stringObj = JSON.stringify(obj);
+
+        const response = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: stringObj,
+        });
+
+        if (response.statusText === 'OK') {
+          apiRequest('GET', apiUrl);
         }
       }
+    } catch (err) {
+      setIsLoading(false);
+      setError(true);
+      console.error('FAILED TO UPDATE STUDENT DETAILS', err);
+    }
 
-      if (method === 'POST') {
-        response = await axios.post(apiRoute);
+    //. DELETE
+    try {
+      if (method === 'DELETE') {
+        response = await axios.delete(`${apiRoute}?id=${id}`);
+
+        if (response.statusText === 'OK') {
+          setData((prev) => {
+            let data = prev.filter((user) => id !== user.id);
+            return data;
+          });
+        }
       }
-
-      console.log('the fetch response', response);
-
       setIsLoading(false);
     } catch (err) {
-      setError(true);
       setIsLoading(false);
-      console.error(errorMessage, err);
+      setError(true);
+      console.error('FAILED TO DELETE STUDENT', err);
     }
   };
 
   useEffect(() => {
     setIsLoading(true);
-    apiRequest(
-      'GET',
-      apiUrl,
-      setDefaultDatabase,
-      'FAILED TO FETCH DATABASE',
-      setIsApiAlive
-    );
+    apiRequest('GET', apiUrl);
   }, []);
   return (
     <DataContext.Provider
@@ -117,7 +219,9 @@ export const DataProvider = ({ children }) => {
         setShowToast,
         isApiAlive,
         setIsApiAlive,
+        addNewStudent,
         apiRequest,
+        updateStudent,
       }}>
       {children}
     </DataContext.Provider>

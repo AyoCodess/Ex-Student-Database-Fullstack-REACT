@@ -17,7 +17,7 @@ const App = () => {
 
   return (
     <Wrapper>
-      {!isLoading && isApiAlive && <ApiFailed />}
+      {/* {!isLoading && isApiAlive && <ApiFailed />}
       {isLoading && !isApiAlive && <LoadingSpinner />}
       {!isLoading && !isApiAlive && (
         <>
@@ -27,7 +27,7 @@ const App = () => {
         </>
       )}
       <Modal />
-      <Toast />
+      <Toast /> */}
     </Wrapper>
   );
 };

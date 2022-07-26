@@ -20,6 +20,9 @@ export const Modal = () => {
     fetchDatabase,
     showToast,
     setShowToast,
+    updateStudent,
+    addNewStudent,
+    defaultDatabase,
   } = useContext(DataContext);
 
   //. adding new student form input data
@@ -72,65 +75,65 @@ export const Modal = () => {
     });
   };
 
-  //. adding new student to database
-  const addNewStudent = () => {
-    setID(0);
-    setShowModal(false);
-    const checkingForEmptyFields = () => {
-      let arr = Object.values(newStudentData);
+  //   //. adding new student to database
+  //   const addNewStudent = () => {
+  //     setID(0);
+  //     setShowModal(false);
+  //     const checkingForEmptyFields = () => {
+  //       let arr = Object.values(newStudentData);
 
-      if (arr.length < 6) {
-        setShowToast(true);
-        console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
-      } else {
-        addStudentToDatabase();
-      }
-    };
+  //       if (arr.length < 6) {
+  //         setShowToast(true);
+  //         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
+  //       } else {
+  //         addStudentToDatabase();
+  //       }
+  //     };
 
-    checkingForEmptyFields();
-  };
+  //     checkingForEmptyFields();
+  //   };
 
-  const addStudentToDatabase = async () => {
-    // console.log('new student data', newStudentData);
-    // const postApi =
-    //   'https://interview-practical.azurewebsites.net/api/contacts';
-    const postApi = 'https://localhost:3004/api/contacts';
+  //   const addStudentToDatabase = async () => {
+  //     // console.log('new student data', newStudentData);
+  //     // const postApi =
+  //     //   'https://interview-practical.azurewebsites.net/api/contacts';
+  //     const postApi = 'https://localhost:3004/api/contacts';
 
-    try {
-      //   const response = await axios.put(postApi, newStudentData);
-      const response = await axios.post(postApi, newStudentData);
-      const { data } = response;
+  //     try {
+  //       //   const response = await axios.put(postApi, newStudentData);
+  //       const response = await axios.post(postApi, newStudentData);
+  //       const { data } = response;
 
-      if (response.statusText === 'OK') {
-        setDefaultDatabase((prev) => {
-          return [...prev, data];
-        });
-      }
-    } catch (err) {
-      console.error('FAILED TO POST NEW STUDENT TO DATABASE');
-    }
+  //       if (response.statusText === 'OK') {
+  //         setDefaultDatabase((prev) => {
+  //           return [...prev, data];
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error('FAILED TO POST NEW STUDENT TO DATABASE');
+  //     }
 
-    setNewStudentData({});
-  };
+  //     setNewStudentData({});
+  //   };
 
   //. updating current student details on database
-  const updateStudent = () => {
-    setShowModal(false);
+  //   const updateStudent = () => {
+  //     setShowModal(false);
 
-    const checkingForEmptyFields = () => {
-      let arr = Object.values({ ...newStudentData, currentSelectedStudentID });
-      if (arr.length < 6) {
-        //- add alert modal here
-        setShowToast(true);
-        console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
-      } else {
-        updateStudentInDatabase();
-      }
-    };
+  //     const checkingForEmptyFields = () => {
+  //       let arr = Object.values({ ...newStudentData, currentSelectedStudentID });
+  //       if (arr.length < 6) {
+  //         //- add alert modal here
+  //         setShowToast(true);
+  //         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
+  //       } else {
+  //         updateStudentInDatabase();
+  //       }
+  //     };
 
-    checkingForEmptyFields();
-    setNewStudentData({});
-  };
+  //     checkingForEmptyFields();
+  //     setNewStudentData({});
+  //   };
 
   const updateStudentInDatabase = async () => {
     // console.log('new student data', newStudentData);
@@ -195,8 +198,8 @@ export const Modal = () => {
                   <div className='mt-4  flex flex-col gap-2  rounded-full '>
                     {modalTitle === 'Add Student' && (
                       <InputDisplayOnly
-                        defaultValue={0}
-                        onBlur={() => setID()}
+                        defaultValue={defaultDatabase.length + 1}
+                        // onBlur={() => setID()}
                       />
                     )}
                     {modalTitle === 'Update Student' &&

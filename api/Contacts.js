@@ -425,7 +425,6 @@ export const Contacts = [
   },
 ];
 
-
 export const DefaultContacts = [
   {
     id: 0,
@@ -843,14 +842,4 @@ export const DefaultContacts = [
     school: 'Four',
     phoneNumber: '(456) 674-3683',
   },
-  {
-    id: 52,
-    firstName: 'asa',
-    lastName: 'SAs',
-    dateOfBirth: null,
-    school: 'ASs',
-    phoneNumber: 'aSAs',
-  },
 ];
-
-

@@ -6,7 +6,7 @@ import { Contacts, DefaultContacts } from './Contacts.js';
 const app = express();
 const port = process.env.PORT || 3004;
 app.use(cors());
-
+// app.use(express.json());
 let currentContacts = DefaultContacts;
 
 // - landing page + meta data
@@ -91,55 +91,22 @@ app.get(`/api/contacts/reset`, async (req, res) => {
   }
 });
 
-// - CREATE all contacts
+// - CREATE new contact
 app.post(`/api/contacts/`, async (req, res) => {
-  try {
-    const response = res.json(req.body);
-    console.log('this is the data:', response);
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: 'failed',
-      message: 'We couldn’t get any data',
-    });
-  }
-});
+  console.log('received request...');
+  console.log(req);
+  const data = req.body;
 
-app.get(`/api/contacts/`, async (req, res) => {
-  const { artistId } = req.params;
+  const newContactsDatabase = [
+    ...DefaultContacts,
+    { id: DefaultContacts.length + 1, ...data },
+  ];
 
-  try {
-    const response = await axios(
-      `https://musicbrainz.org/ws/2/artist/${artistId}`
-    );
+  currentContacts = newContactsDatabase;
 
-    if (!response) {
-      res.status(500).json({
-        status: 'failed',
-        message: 'No data, please contact the developer for assistance',
-      });
-    }
+  res.json(currentContacts);
 
-    // - transforming the consumed data into a better structure
-    const artistInfo = {
-      type: response.data.type,
-      name: response.data.name,
-      countryAbbr: response.data.country,
-      country: response.data.area.name,
-      city: response.data.begin_area.name,
-      start: response.data['life-span'].begin,
-      end: response.data['life-span'].end,
-      isActive: response.data['life-span'].ended ? false : true,
-    };
-
-    res.json(artistInfo);
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: 'failed',
-      message: 'We couldn’t find an artist with this id',
-    });
-  }
+  console.log('the data', data);
 });
 
 app.get('*', (req, res) => {
