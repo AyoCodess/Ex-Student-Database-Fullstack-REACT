@@ -108,6 +108,14 @@ app.post(`/api/contacts/`, async (req, res) => {
   }
 });
 
+app.delete('/api/contacts/:id', async (req, res) => {
+  const id = req.params.id;
+
+  currentContacts = currentContacts.filter((user) => Number(id) !== user.id);
+
+  res.json(currentContacts);
+});
+
 app.get('*', (req, res) => {
   res.status(404).json({
     status: 'failed',

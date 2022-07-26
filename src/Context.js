@@ -160,13 +160,15 @@ export const DataProvider = ({ children }) => {
     //. DELETE
     try {
       if (method === 'DELETE') {
-        response = await axios.delete(`${apiRoute}?id=${id}`);
+        console.log('in delete...');
+        response = await axios.delete(`${apiRoute}/${id}`);
+
+        const { data } = response;
+
+        console.log(data);
 
         if (response.statusText === 'OK') {
-          setData((prev) => {
-            let data = prev.filter((user) => id !== user.id);
-            return data;
-          });
+          setData(data);
         }
       }
       setIsLoading(false);

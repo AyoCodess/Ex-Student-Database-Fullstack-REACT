@@ -181,7 +181,15 @@ export const List = () => {
                           Edit<span className='sr-only'>, {person.name}</span>
                         </div>
                         <div
-                          onClick={() => deleteStudent(person.id)}
+                          onClick={() =>
+                            apiRequest(
+                              'DELETE',
+                              undefined,
+                              undefined,
+                              undefined,
+                              person.id
+                            )
+                          }
                           className='text-red-600 hover:text-red-900 mt-2 '>
                           Delete<span className='sr-only'>, {person.name}</span>
                         </div>
