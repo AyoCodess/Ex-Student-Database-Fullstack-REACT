@@ -12,6 +12,7 @@ export const DataProvider = ({ children }) => {
   const [modalTitle, setModalTitle] = useState({});
   const [currentSelectedUser, setCurrentSelectedUser] = useState();
   const [showToast, setShowToast] = useState(false);
+  const [invalidInputData, setInvalidInputData] = useState(false);
 
   //. checks for dd/MM/yyyy
   const dateRegEx =
@@ -224,6 +225,8 @@ export const DataProvider = ({ children }) => {
         updateStudent,
         currentSelectedUser,
         setCurrentSelectedUser,
+        invalidInputData,
+        setInvalidInputData,
       }}>
       {children}
     </DataContext.Provider>

@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { DataContext } from '../Context';
 import { Input } from './Input';
+import { InputDate } from './InputDate';
 import { InputDisplayOnly } from './InputDisplayOnly';
 
 export const Modal = () => {
@@ -16,9 +17,10 @@ export const Modal = () => {
     addNewStudent,
     defaultDatabase,
     currentSelectedUser,
+    setInvalidInputData,
   } = useContext(DataContext);
 
-  //. adding new student form input data
+  //. adding new student from input data
   const setFirstName = (firstName) => {
     setNewStudentData((prev) => {
       return {
@@ -39,6 +41,7 @@ export const Modal = () => {
 
   const setDateOfBirth = (dateOfBirth) => {
     if (dateRegEx.test(dateOfBirth)) {
+      setInvalidInputData(false);
       setNewStudentData((prev) => {
         return {
           ...prev,
@@ -46,6 +49,7 @@ export const Modal = () => {
         };
       });
     } else {
+      setInvalidInputData(true);
       console.error('ERROR ISSUE WITH DATE');
     }
   };
@@ -127,10 +131,11 @@ export const Modal = () => {
                       placeholder={currentSelectedUser?.lastName || 'Last Name'}
                       onChange={(e) => setLastName(e.target.value)}
                     />
-                    <Input
+                    <InputDate
                       placeholder={
-                        currentSelectedUser?.dateOfBirth + ' (dd/mm/yyyy)' ||
-                        'dd/mm/yyyy'
+                        currentSelectedUser
+                          ? currentSelectedUser.dateOfBirth + ' (dd/mm/yyyy)'
+                          : 'dd/mm/yyyy'
                       }
                       onBlur={(e) => {
                         setDateOfBirth(e.target.value);
