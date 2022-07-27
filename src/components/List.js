@@ -11,6 +11,8 @@ export const List = () => {
     apiRequest,
     setCurrentSelectedUser,
     setInvalidInputData,
+    setModalDescription,
+    setResetDatabase,
   } = useContext(DataContext);
 
   return (
@@ -31,6 +33,9 @@ export const List = () => {
                   setCurrentSelectedUser(null);
                   setInvalidInputData(false);
                   setModalTitle('Add Student');
+                  setModalDescription(
+                    'You must re-enter all data, empty fields are not allowed and date must be correctly formatted.'
+                  );
                 }}
                 className='inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto'>
                 Add student
@@ -38,19 +43,24 @@ export const List = () => {
               <button
                 type='button'
                 onClick={() => {
-                  apiRequest(
-                    'GET',
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    'RESET'
-                  );
+                  apiRequest('GET');
                   setSearchInput('');
                 }}
-                className='inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto'>
-                Reset Table
+                className='inline-flex items-center justify-center rounded-md border border-transparent bg-blue-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 sm:w-auto'>
+                Refresh
+              </button>
+              <button
+                type='button'
+                onClick={() => {
+                  setShowModal(true);
+                  setModalTitle('Reset User Database');
+                  setModalDescription(
+                    'Are you sure you want to reset the data, you will loose all your custom data'
+                  );
+                  setResetDatabase(true);
+                }}
+                className='inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-auto'>
+                Reset Database
               </button>
             </div>
           </div>
@@ -129,6 +139,9 @@ export const List = () => {
                             setShowModal(true);
                             setInvalidInputData(false);
                             setModalTitle('Update Student');
+                            setModalDescription(
+                              'You must re-enter all data, empty fields are not allowed and date must be correctly formatted.'
+                            );
                             setCurrentSelectedUser(person);
                           }}
                           className='text-blue-600 hover:text-blue-900'>
