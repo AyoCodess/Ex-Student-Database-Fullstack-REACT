@@ -18,6 +18,11 @@ export const Modal = () => {
     defaultDatabase,
     currentSelectedUser,
     setInvalidInputData,
+    modalDescription,
+    resetDatabase,
+    setResetDatabase,
+    apiRequest,
+    setSearchInput,
   } = useContext(DataContext);
 
   //. adding new student from input data
@@ -102,56 +107,57 @@ export const Modal = () => {
                   className='text-2xl leading-6 font-medium text-gray-900'>
                   {modalTitle}
                 </Dialog.Title>
-                <p className='my-2 text-sm'>
-                  You must re-enter all data, empty fields are not allowed and
-                  date must be correctly formatted.
-                </p>
-                <div>
-                  <div className='mt-4  flex flex-col gap-2  rounded-full '>
-                    {modalTitle === 'Add Student' && (
-                      <InputDisplayOnly
-                        defaultValue={
-                          defaultDatabase[defaultDatabase.length - 1].id + 1
-                        }
-                      />
-                    )}
-                    {modalTitle === 'Update Student' &&
-                      currentSelectedUser.id && (
+                <p className='my-2 text-sm'>{modalDescription}</p>
+                {!resetDatabase && (
+                  <div>
+                    <div className='mt-4  flex flex-col gap-2  rounded-full '>
+                      {modalTitle === 'Add Student' && (
                         <InputDisplayOnly
-                          defaultValue={currentSelectedUser.id}
+                          defaultValue={
+                            defaultDatabase[defaultDatabase.length - 1].id + 1
+                          }
                         />
                       )}
-                    <Input
-                      placeholder={
-                        currentSelectedUser?.firstName || 'First Name'
-                      }
-                      onChange={(e) => setFirstName(e.target.value)}
-                    />
-                    <Input
-                      placeholder={currentSelectedUser?.lastName || 'Last Name'}
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
-                    <InputDate
-                      placeholder={
-                        currentSelectedUser
-                          ? currentSelectedUser.dateOfBirth + ' (dd/mm/yyyy)'
-                          : 'dd/mm/yyyy'
-                      }
-                      onBlur={(e) => {
-                        setDateOfBirth(e.target.value);
-                      }}
-                    />
-                    <Input
-                      placeholder={currentSelectedUser?.school || 'School'}
-                      onChange={(e) => setSchool(e.target.value)}
-                    />
-                    <Input
-                      placeholder={currentSelectedUser?.phone || 'Phone'}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                    />
+                      {modalTitle === 'Update Student' &&
+                        currentSelectedUser.id && (
+                          <InputDisplayOnly
+                            defaultValue={currentSelectedUser.id}
+                          />
+                        )}
+                      <Input
+                        placeholder={
+                          currentSelectedUser?.firstName || 'First Name'
+                        }
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+                      <Input
+                        placeholder={
+                          currentSelectedUser?.lastName || 'Last Name'
+                        }
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+                      <InputDate
+                        placeholder={
+                          currentSelectedUser
+                            ? currentSelectedUser.dateOfBirth + ' (dd/mm/yyyy)'
+                            : 'dd/mm/yyyy'
+                        }
+                        onBlur={(e) => {
+                          setDateOfBirth(e.target.value);
+                        }}
+                      />
+                      <Input
+                        placeholder={currentSelectedUser?.school || 'School'}
+                        onChange={(e) => setSchool(e.target.value)}
+                      />
+                      <Input
+                        placeholder={currentSelectedUser?.phone || 'Phone'}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                      />
+                    </div>
+                    <div className='mt-3 text-center sm:mt-5'></div>
                   </div>
-                  <div className='mt-3 text-center sm:mt-5'></div>
-                </div>
+                )}
                 <div className=' flex flex-col sm:flex-row gap-2 mt-5 sm:mt-6'>
                   {modalTitle === 'Add Student' && (
                     <button
@@ -173,12 +179,35 @@ export const Modal = () => {
                       Update Student
                     </button>
                   )}
+                  {resetDatabase && (
+                    <button
+                      type='button'
+                      className='inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm'
+                      onClick={() => {
+                        setShowModal(false);
+                        apiRequest(
+                          'GET',
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          undefined,
+                          'RESET'
+                        );
+                        setSearchInput('');
+                      }}>
+                      Yes
+                    </button>
+                  )}
                   <button
                     type='button'
                     className='inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm'
                     onClick={() => {
                       setShowModal(false);
                       setNewStudentData({});
+                      setTimeout(() => {
+                        setResetDatabase(false);
+                      }, 300);
                     }}>
                     Cancel
                   </button>
