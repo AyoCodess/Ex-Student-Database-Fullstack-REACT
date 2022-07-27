@@ -53,7 +53,7 @@ export const List = () => {
                 type='button'
                 onClick={() => {
                   setShowModal(true);
-                  setModalTitle('Reset User Database');
+                  setModalTitle('Reset Database');
                   setModalDescription(
                     'Are you sure you want to reset the data, you will loose all your custom data'
                   );
