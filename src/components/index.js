@@ -10,6 +10,7 @@ export * from './Footer';
 export * from './LoadingSpinner';
 export * from './Modal';
 export * from './Input';
+export * from './InputDate';
 export * from './InputDisplayOnly';
 export * from './Toast';
 export * from './ApiFailed';

@@ -1,28 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { DataContext } from '../Context';
 import { Input } from './Input';
+import { InputDate } from './InputDate';
 import { InputDisplayOnly } from './InputDisplayOnly';
-import axios from 'axios';
 
 export const Modal = () => {
   const {
     showModal,
     setShowModal,
-    newStudentData,
     setNewStudentData,
-    setDefaultDatabase,
     modalTitle,
     dateRegEx,
-    currentSelectedStudentID,
-    setID,
-    fetchDatabase,
-    showToast,
-    setShowToast,
+    updateStudent,
+    addNewStudent,
+    defaultDatabase,
+    currentSelectedUser,
+    setInvalidInputData,
   } = useContext(DataContext);
 
-  //. adding new student form input data
+  //. adding new student from input data
   const setFirstName = (firstName) => {
     setNewStudentData((prev) => {
       return {
@@ -43,6 +41,7 @@ export const Modal = () => {
 
   const setDateOfBirth = (dateOfBirth) => {
     if (dateRegEx.test(dateOfBirth)) {
+      setInvalidInputData(false);
       setNewStudentData((prev) => {
         return {
           ...prev,
@@ -50,6 +49,7 @@ export const Modal = () => {
         };
       });
     } else {
+      setInvalidInputData(true);
       console.error('ERROR ISSUE WITH DATE');
     }
   };
@@ -70,91 +70,6 @@ export const Modal = () => {
         phoneNumber,
       };
     });
-  };
-
-  //. adding new student to database
-  const addNewStudent = () => {
-    setID(0);
-    setShowModal(false);
-    const checkingForEmptyFields = () => {
-      let arr = Object.values(newStudentData);
-
-      if (arr.length < 6) {
-        setShowToast(true);
-        console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
-      } else {
-        addStudentToDatabase();
-      }
-    };
-
-    checkingForEmptyFields();
-  };
-
-  const addStudentToDatabase = async () => {
-    // console.log('new student data', newStudentData);
-    // const postApi =
-    //   'https://interview-practical.azurewebsites.net/api/contacts';
-    const postApi = 'https://localhost:3004/api/contacts';
-
-    try {
-      //   const response = await axios.put(postApi, newStudentData);
-      const response = await axios.post(postApi, newStudentData);
-      const { data } = response;
-
-      if (response.statusText === 'OK') {
-        setDefaultDatabase((prev) => {
-          return [...prev, data];
-        });
-      }
-    } catch (err) {
-      console.error('FAILED TO POST NEW STUDENT TO DATABASE');
-    }
-
-    setNewStudentData({});
-  };
-
-  //. updating current student details on database
-  const updateStudent = () => {
-    setShowModal(false);
-
-    const checkingForEmptyFields = () => {
-      let arr = Object.values({ ...newStudentData, currentSelectedStudentID });
-      if (arr.length < 6) {
-        //- add alert modal here
-        setShowToast(true);
-        console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
-      } else {
-        updateStudentInDatabase();
-      }
-    };
-
-    checkingForEmptyFields();
-    setNewStudentData({});
-  };
-
-  const updateStudentInDatabase = async () => {
-    // console.log('new student data', newStudentData);
-    try {
-      const postApi =
-        'https://interview-practical.azurewebsites.net/api/Contacts';
-
-      const stringObj = JSON.stringify(newStudentData);
-
-      //. having issues with axios put, so used fetch.
-      const response = await fetch(postApi, {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: stringObj,
-      });
-
-      if (response.statusText === 'OK') {
-        fetchDatabase();
-      }
-    } catch (err) {
-      console.error('FAILED TO UPDATE STUDENT DETAILS', err);
-    }
   };
 
   return (
@@ -188,44 +103,50 @@ export const Modal = () => {
                   {modalTitle}
                 </Dialog.Title>
                 <p className='my-2 text-sm'>
-                  Empty fields are not allowed and date must be correctly
-                  formatted.
+                  You must re-enter all data, empty fields are not allowed and
+                  date must be correctly formatted.
                 </p>
                 <div>
                   <div className='mt-4  flex flex-col gap-2  rounded-full '>
                     {modalTitle === 'Add Student' && (
                       <InputDisplayOnly
-                        defaultValue={0}
-                        onBlur={() => setID()}
+                        defaultValue={
+                          defaultDatabase[defaultDatabase.length - 1].id + 1
+                        }
                       />
                     )}
                     {modalTitle === 'Update Student' &&
-                      currentSelectedStudentID && (
+                      currentSelectedUser.id && (
                         <InputDisplayOnly
-                          defaultValue={currentSelectedStudentID}
-                          onBlur={() => setID()}
+                          defaultValue={currentSelectedUser.id}
                         />
                       )}
                     <Input
-                      placeholder={'First Name'}
+                      placeholder={
+                        currentSelectedUser?.firstName || 'First Name'
+                      }
                       onChange={(e) => setFirstName(e.target.value)}
                     />
                     <Input
-                      placeholder={'Last Name'}
+                      placeholder={currentSelectedUser?.lastName || 'Last Name'}
                       onChange={(e) => setLastName(e.target.value)}
                     />
-                    <Input
-                      placeholder={'dd/mm/yyyy'}
+                    <InputDate
+                      placeholder={
+                        currentSelectedUser
+                          ? currentSelectedUser.dateOfBirth + ' (dd/mm/yyyy)'
+                          : 'dd/mm/yyyy'
+                      }
                       onBlur={(e) => {
                         setDateOfBirth(e.target.value);
                       }}
                     />
                     <Input
-                      placeholder={'School'}
+                      placeholder={currentSelectedUser?.school || 'School'}
                       onChange={(e) => setSchool(e.target.value)}
                     />
                     <Input
-                      placeholder={'Phone Number'}
+                      placeholder={currentSelectedUser?.phone || 'Phone'}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                     />
                   </div>
