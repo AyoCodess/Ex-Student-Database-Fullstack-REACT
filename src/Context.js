@@ -20,17 +20,16 @@ export const DataProvider = ({ children }) => {
   const dateRegEx =
     /(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)/;
 
-  const apiUrl = 'http://localhost:3004/api/contacts';
+  const apiUrl = 'https://ayocodes-api.up.railway.app/api/contacts';
+
+  //= testing
+  //   const apiUrl = 'http://localhost:3004/api/contacts';
 
   const transformData = (array) => {
     const data = array.map((person) => {
       return {
-        id: person.id,
-        firstName: person.firstName,
-        lastName: person.lastName,
+        ...person,
         dateOfBirth: new Date(person.dateOfBirth).toDateString().slice(3),
-        school: person.school,
-        phoneNumber: person.phoneNumber,
       };
     });
 
@@ -117,8 +116,7 @@ export const DataProvider = ({ children }) => {
         response = await axios.post(apiRoute, obj);
         const { data } = response;
 
-        console.log('the data', data);
-        if (response.statusText === 'OK') {
+        if (response.status === 200) {
           setData(transformData(data));
         }
         setIsLoading(false);
@@ -132,7 +130,6 @@ export const DataProvider = ({ children }) => {
     //. UPDATE CONTACT
     try {
       if (method === 'PUT') {
-        console.log('updating...');
         console.log(id);
 
         const response = await fetch(`${apiUrl}/update/${id}`, {
@@ -145,9 +142,9 @@ export const DataProvider = ({ children }) => {
 
         const data = await response.json();
 
-        console.log('the data', data);
+        console.log({ data });
 
-        if (response.statusText === 'OK') {
+        if (response.status === 200) {
           setData(transformData(data));
         }
       }
@@ -160,14 +157,15 @@ export const DataProvider = ({ children }) => {
     //. DELETE CONTACT
     try {
       if (method === 'DELETE') {
-        console.log('in delete...');
         response = await axios.delete(`${apiRoute}/${id}`);
 
         const { data } = response;
 
         console.log(data);
 
-        if (response.statusText === 'OK') {
+        console.log('res', response);
+
+        if (response.status === 200) {
           setData(transformData(data));
         }
       }
@@ -185,7 +183,7 @@ export const DataProvider = ({ children }) => {
         response = await axios.get(`${apiRoute}/reset`);
         const { data } = response;
 
-        if (response.statusText === 'OK') {
+        if (response.status === 200) {
           setData(transformData(data));
         }
         setIsLoading(false);

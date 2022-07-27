@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { DataContext } from '../Context';
@@ -76,6 +76,12 @@ export const Modal = () => {
       };
     });
   };
+
+  if (!showModal) {
+    setTimeout(() => {
+      setResetDatabase(false);
+    }, 300);
+  }
 
   return (
     <Transition.Root show={showModal} as={Fragment}>
