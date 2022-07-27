@@ -8,6 +8,7 @@ const port = process.env.PORT || 3004;
 app.use(cors());
 app.use(express.json());
 const __dirname = path.resolve(path.dirname(''));
+app.use('../dist', express.static(path.join(__dirname, '../dist')));
 let currentContacts;
 
 app.get(`/`, (req, res) => {
