@@ -94,44 +94,46 @@ export const DataProvider = ({ children }) => {
 
     //. LOAD DATABASE
     if (method === 'GET') {
+      setIsLoading(true);
       try {
         response = await axios.get(apiRoute);
-
         const { data } = response;
-
         if (data) {
           setData(transformData(data));
         }
-        setIsLoading(false);
       } catch (err) {
         setError(true);
-        setIsLoading(false);
         console.error('FAILED TO FETCH DATABASE', err);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     //.CREATE NEW CONTACT
     if (method === 'POST') {
+      setIsLoading(true);
       try {
-        response = await axios.post(apiRoute, obj);
+        response = await axios.post('http://www.apiRoute.com', obj);
         const { data } = response;
 
         if (response.status === 200) {
           setData(transformData(data));
         }
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
         setError(true);
         console.error('FAILED TO POST NEW STUDENT TO DATABASE');
+      } finally {
+        setIsLoading(false);
       }
     }
+
+    console.log(isLoading);
 
     //. UPDATE CONTACT
     try {
       if (method === 'PUT') {
+        setIsLoading(true);
         console.log(id);
-
         const response = await fetch(`${apiUrl}/update/${id}`, {
           method: 'PUT',
           headers: {
@@ -139,58 +141,50 @@ export const DataProvider = ({ children }) => {
           },
           body: JSON.stringify({ id: currentSelectedUser.id, ...obj }),
         });
-
         const data = await response.json();
-
-        console.log({ data });
-
         if (response.status === 200) {
           setData(transformData(data));
         }
       }
     } catch (err) {
-      setIsLoading(false);
       setError(true);
       console.error('FAILED TO UPDATE STUDENT DETAILS', err);
+    } finally {
+      setIsLoading(false);
     }
 
     //. DELETE CONTACT
     try {
       if (method === 'DELETE') {
+        setIsLoading(true);
         response = await axios.delete(`${apiRoute}/${id}`);
-
         const { data } = response;
-
-        console.log(data);
-
-        console.log('res', response);
-
         if (response.status === 200) {
           setData(transformData(data));
         }
       }
-      setIsLoading(false);
     } catch (err) {
-      setIsLoading(false);
       setError(true);
       console.error('FAILED TO DELETE STUDENT', err);
+    } finally {
+      setIsLoading(false);
     }
 
     //. RESET DATABASE TO ORIGINAL STATE
     if (method === 'GET' && type === 'RESET') {
+      setIsLoading(true);
       try {
         setIsLoading(true);
         response = await axios.get(`${apiRoute}/reset`);
         const { data } = response;
-
         if (response.status === 200) {
           setData(transformData(data));
         }
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
         setError(true);
         console.error('FAILED TO POST NEW STUDENT TO DATABASE');
+      } finally {
+        setIsLoading(false);
       }
     }
   };
