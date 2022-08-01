@@ -13,7 +13,7 @@ export const List = () => {
     setInvalidInputData,
     setModalDescription,
     setResetDatabase,
-  } = useContext(DataContext);
+  } = useContext(DataContext) as DataContextType;
 
   return (
     <>

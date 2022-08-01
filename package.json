@@ -7,12 +7,17 @@
     "@heroicons/react": "^1.0.6",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^28.1.6",
+    "@types/node": "^18.6.3",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-loader-spinner": "^5.1.5",
     "react-scripts": "5.0.1",
     "react-social-icons": "^5.14.0",
+    "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -29,6 +34,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.18.6",
     "autoprefixer": "^10.4.7",
     "cypress": "^10.3.1",
     "eslint-plugin-cypress": "^2.12.1",

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { DataContext } from '../Context';
 
 export const InputDate = ({ placeholder, onChange, onBlur, value }) => {
-  const { invalidInputData } = useContext(DataContext);
+  const { invalidInputData } = useContext(DataContext) as DataContextType;
   return (
     <div>
       <input

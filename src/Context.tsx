@@ -1,4 +1,4 @@
-import { createContext, React, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 export const DataContext = createContext({});
 
@@ -60,19 +60,23 @@ export const DataProvider = ({ children }) => {
   const updateStudent = () => {
     setShowModal(false);
     const checkingForEmptyFields = () => {
-      let arr = Object.values({ ...newStudentData, currentSelectedUser });
-      if (arr.length < 6) {
-        //- add alert modal here
-        setShowToast(true);
-        console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
-      } else {
-        apiRequest(
-          'PUT',
-          undefined,
-          undefined,
-          undefined,
-          currentSelectedUser.id
-        );
+      if (currentSelectedUser) {
+        let arr = Object.values({ ...newStudentData, currentSelectedUser });
+        if (arr.length < 6) {
+          //- add alert modal here
+          setShowToast(true);
+          console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
+        } else {
+          apiRequest(
+            'PUT',
+            undefined,
+            undefined,
+            undefined,
+            currentSelectedUser.id,
+            undefined,
+            undefined
+          );
+        }
       }
     };
     checkingForEmptyFields();
@@ -81,13 +85,13 @@ export const DataProvider = ({ children }) => {
 
   //. UNIVERSAL FETCH FUNCTION
   const apiRequest = async (
-    method,
+    method: string,
     apiRoute = apiUrl,
     setData = setDefaultDatabase,
     setError = setIsApiAlive,
-    id = 0,
-    obj = newStudentData,
-    type
+    id = 0 as number,
+    obj = newStudentData as StudentDataType,
+    type?: string
   ) => {
     setError(false);
     let response;
@@ -191,7 +195,15 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    apiRequest('GET', apiUrl);
+    apiRequest(
+      'GET',
+      apiUrl,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined
+    );
   }, []);
   return (
     <DataContext.Provider

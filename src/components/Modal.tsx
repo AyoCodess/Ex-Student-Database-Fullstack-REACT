@@ -23,7 +23,7 @@ export const Modal = () => {
     setResetDatabase,
     apiRequest,
     setSearchInput,
-  } = useContext(DataContext);
+  } = useContext(DataContext) as DataContextType;
 
   //. adding new student from input data
   const setFirstName = (firstName) => {
@@ -122,12 +122,16 @@ export const Modal = () => {
                           defaultValue={
                             defaultDatabase[defaultDatabase.length - 1].id + 1
                           }
+                          placeholder={undefined}
+                          onBlur={undefined}
                         />
                       )}
                       {modalTitle === 'Update Student' &&
                         currentSelectedUser.id && (
                           <InputDisplayOnly
                             defaultValue={currentSelectedUser.id}
+                            placeholder={undefined}
+                            onBlur={undefined}
                           />
                         )}
                       <Input
@@ -135,12 +139,16 @@ export const Modal = () => {
                           currentSelectedUser?.firstName || 'First Name'
                         }
                         onChange={(e) => setFirstName(e.target.value)}
+                        onBlur={undefined}
+                        value={undefined}
                       />
                       <Input
                         placeholder={
                           currentSelectedUser?.lastName || 'Last Name'
                         }
                         onChange={(e) => setLastName(e.target.value)}
+                        onBlur={undefined}
+                        value={undefined}
                       />
                       <InputDate
                         placeholder={
@@ -151,14 +159,20 @@ export const Modal = () => {
                         onBlur={(e) => {
                           setDateOfBirth(e.target.value);
                         }}
+                        onChange={undefined}
+                        value={undefined}
                       />
                       <Input
                         placeholder={currentSelectedUser?.school || 'School'}
                         onChange={(e) => setSchool(e.target.value)}
+                        onBlur={undefined}
+                        value={undefined}
                       />
                       <Input
                         placeholder={currentSelectedUser?.phone || 'Phone'}
                         onChange={(e) => setPhoneNumber(e.target.value)}
+                        onBlur={undefined}
+                        value={undefined}
                       />
                     </div>
                     <div className='mt-3 text-center sm:mt-5'></div>
