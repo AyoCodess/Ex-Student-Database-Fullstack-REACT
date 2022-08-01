@@ -127,8 +127,6 @@ export const DataProvider = ({ children }) => {
       }
     }
 
-    console.log(isLoading);
-
     //. UPDATE CONTACT
     try {
       if (method === 'PUT') {

@@ -23,6 +23,7 @@ export const Modal = () => {
     setResetDatabase,
     apiRequest,
     setSearchInput,
+    apiUrl,
   } = useContext(DataContext);
 
   //. adding new student from input data
@@ -193,7 +194,7 @@ export const Modal = () => {
                         setShowModal(false);
                         apiRequest(
                           'GET',
-                          undefined,
+                          apiUrl,
                           undefined,
                           undefined,
                           undefined,
