@@ -1,3 +1,8 @@
+declare module '*.jpeg' {
+  const content: string;
+  export default content;
+}
+
 type DataContextType = {
   isLoading;
   setIsLoading;
