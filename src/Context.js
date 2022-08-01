@@ -113,7 +113,7 @@ export const DataProvider = ({ children }) => {
     if (method === 'POST') {
       setIsLoading(true);
       try {
-        response = await axios.post('http://www.apiRoute.com', obj);
+        response = await axios.post(apiRoute, obj);
         const { data } = response;
 
         if (response.status === 200) {
