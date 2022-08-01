@@ -5,13 +5,14 @@ export const DataContext = createContext({});
 export const DataProvider = ({ children }) => {
   const [defaultDatabase, setDefaultDatabase] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isApiAlive, setIsApiAlive] = useState();
+  const [isApiAlive, setIsApiAlive] = useState<ApiErrorType>(false);
   const [searchInput, setSearchInput] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [newStudentData, setNewStudentData] = useState({});
   const [modalTitle, setModalTitle] = useState({});
   const [modalDescription, setModalDescription] = useState();
-  const [currentSelectedUser, setCurrentSelectedUser] = useState();
+  const [currentSelectedUser, setCurrentSelectedUser] =
+    useState<CurrentSelectedUserType>();
   const [showToast, setShowToast] = useState(false);
   const [invalidInputData, setInvalidInputData] = useState(false);
   const [resetDatabase, setResetDatabase] = useState(false);
@@ -46,10 +47,18 @@ export const DataProvider = ({ children }) => {
         setShowToast(true);
         console.error('ONE OF THE ENTRIES IS EMPTY, CANNOT ADD NEW USER');
       } else {
-        apiRequest('POST', undefined, undefined, undefined, undefined, {
-          id: defaultDatabase[defaultDatabase.length - 1].id + 1,
-          ...newStudentData,
-        });
+        apiRequest(
+          'POST',
+          apiUrl,
+          undefined,
+          undefined,
+          undefined,
+          {
+            id: defaultDatabase[defaultDatabase.length - 1].id + 1,
+            ...newStudentData,
+          } as StudentDataType,
+          undefined
+        );
       }
     };
 
@@ -69,7 +78,7 @@ export const DataProvider = ({ children }) => {
         } else {
           apiRequest(
             'PUT',
-            undefined,
+            apiUrl,
             undefined,
             undefined,
             currentSelectedUser.id,
@@ -86,7 +95,7 @@ export const DataProvider = ({ children }) => {
   //. UNIVERSAL FETCH FUNCTION
   const apiRequest = async (
     method: string,
-    apiRoute = apiUrl,
+    apiUrl: string,
     setData = setDefaultDatabase,
     setError = setIsApiAlive,
     id = 0 as number,
@@ -100,7 +109,7 @@ export const DataProvider = ({ children }) => {
     if (method === 'GET') {
       setIsLoading(true);
       try {
-        response = await axios.get(apiRoute);
+        response = await axios.get(apiUrl);
         const { data } = response;
         if (data) {
           setData(transformData(data));
@@ -117,7 +126,7 @@ export const DataProvider = ({ children }) => {
     if (method === 'POST') {
       setIsLoading(true);
       try {
-        response = await axios.post('http://www.apiRoute.com', obj);
+        response = await axios.post(apiUrl, obj);
         const { data } = response;
 
         if (response.status === 200) {
@@ -161,11 +170,13 @@ export const DataProvider = ({ children }) => {
     try {
       if (method === 'DELETE') {
         setIsLoading(true);
-        response = await axios.delete(`${apiRoute}/${id}`);
+        response = await axios.delete(`${apiUrl}/${id}`);
         const { data } = response;
         if (response.status === 200) {
           setData(transformData(data));
         }
+
+        console.log(data);
       }
     } catch (err) {
       setError(true);
@@ -179,7 +190,7 @@ export const DataProvider = ({ children }) => {
       setIsLoading(true);
       try {
         setIsLoading(true);
-        response = await axios.get(`${apiRoute}/reset`);
+        response = await axios.get(`${apiUrl}/reset`);
         const { data } = response;
         if (response.status === 200) {
           setData(transformData(data));
@@ -228,6 +239,7 @@ export const DataProvider = ({ children }) => {
         setIsApiAlive,
         addNewStudent,
         apiRequest,
+        apiUrl,
         updateStudent,
         currentSelectedUser,
         setCurrentSelectedUser,

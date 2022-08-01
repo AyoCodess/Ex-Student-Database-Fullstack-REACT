@@ -28,9 +28,10 @@ type DataContextType = {
   setModalDescription;
   resetDatabase;
   setResetDatabase;
+  apiUrl;
 };
 
-export type StudentDataType = {
+type StudentDataType = {
   id: number;
   firstName: string;
   lastName: string;
@@ -38,3 +39,7 @@ export type StudentDataType = {
   school: string;
   phoneNumber: string;
 };
+
+type CurrentSelectedUserType = StudentDataType | null;
+
+type ApiErrorType = boolean;

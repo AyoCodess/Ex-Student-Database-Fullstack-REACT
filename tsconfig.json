@@ -9,8 +9,9 @@
     "moduleResolution": "node",
     "module": "esnext",
     "jsx": "preserve",
-    "strict": false
+    "strict": false,
+    "typeRoots": ["node_modules/@types", "src/types"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/index.d.ts"],
   "exclude": ["node_modules"]
 }

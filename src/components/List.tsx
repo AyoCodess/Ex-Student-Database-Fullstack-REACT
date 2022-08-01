@@ -13,6 +13,7 @@ export const List = () => {
     setInvalidInputData,
     setModalDescription,
     setResetDatabase,
+    apiUrl,
   } = useContext(DataContext) as DataContextType;
 
   return (
@@ -43,7 +44,7 @@ export const List = () => {
               <button
                 type='button'
                 onClick={() => {
-                  apiRequest('GET');
+                  apiRequest('GET', apiUrl);
                   setSearchInput('');
                 }}
                 className='inline-flex items-center justify-center rounded-md border border-transparent bg-blue-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 sm:w-auto'>
@@ -151,10 +152,12 @@ export const List = () => {
                           onClick={() =>
                             apiRequest(
                               'DELETE',
+                              apiUrl,
                               undefined,
                               undefined,
                               undefined,
-                              person.id
+                              person.id,
+                              undefined
                             )
                           }
                           className='text-red-600 hover:text-red-900 mt-2 '>
