@@ -3,7 +3,7 @@ import { DataContext } from '../Context';
 
 export const Search = () => {
   const { defaultDatabase, setDefaultDatabase, searchInput, setSearchInput } =
-    useContext(DataContext);
+    useContext(DataContext) as DataContextType;
 
   const handleSearch = (searchTerm) => {
     setSearchInput(searchTerm);

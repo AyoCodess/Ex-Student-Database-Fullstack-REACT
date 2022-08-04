@@ -6,7 +6,9 @@ import { XIcon } from '@heroicons/react/solid';
 import { DataContext } from '../Context';
 
 export const Toast = () => {
-  const { showToast, setShowToast } = useContext(DataContext);
+  const { showToast, setShowToast } = useContext(
+    DataContext
+  ) as DataContextType;
 
   useEffect(() => {
     const timeout = setTimeout(() => {

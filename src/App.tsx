@@ -13,7 +13,7 @@ import {
 import { DataContext } from './Context';
 
 const App = () => {
-  const { isLoading, isApiAlive } = useContext(DataContext);
+  const { isLoading, isApiAlive } = useContext(DataContext) as DataContextType;
 
   return (
     <Wrapper>
