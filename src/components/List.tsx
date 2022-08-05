@@ -145,7 +145,7 @@ export const List = () => {
                             );
                             setCurrentSelectedUser(person);
                           }}
-                          className='text-blue-600 hover:text-blue-900'>
+                          className='text-blue-600 hover:text-blue-900 cursor-pointer'>
                           Edit<span className='sr-only'>, {person.name}</span>
                         </div>
                         <div
@@ -160,7 +160,7 @@ export const List = () => {
                               undefined
                             )
                           }
-                          className='text-red-600 hover:text-red-900 mt-2 '>
+                          className='text-red-600 hover:text-red-900 mt-2 cursor-pointer '>
                           Delete<span className='sr-only'>, {person.name}</span>
                         </div>
                       </td>
