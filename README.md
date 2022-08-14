@@ -2,7 +2,7 @@
 
 **Note** This project originally had an API folder which I have since removed, due to the original API I was consuming not working any longer. This gave me idea of creating my own API for some of my projects going forward.
 
-**Link to API landing page:** https://ayocodes-api.up.railway.app/
+**Link to API landing page:** https://api-for-personal-projects.vercel.app/
 
 ### Live link
 

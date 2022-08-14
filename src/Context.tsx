@@ -21,7 +21,7 @@ export const DataProvider = ({ children }) => {
   const dateRegEx =
     /(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)/;
 
-  const apiUrl = 'https://ayocodes-api.up.railway.app/api/contacts';
+  const apiUrl = 'https://api-for-personal-projects.vercel.app/api/contacts';
 
   //= testing
   //   const apiUrl = 'http://localhost:3004/api/contacts';
@@ -167,7 +167,7 @@ export const DataProvider = ({ children }) => {
     //. DELETE CONTACT
     try {
       if (method === 'DELETE') {
-        setIsLoading(true);
+        // setIsLoading(true);
         response = await axios.delete(`${apiUrl}/${id}`);
         const { data } = response;
         if (response.status === 200) {
@@ -180,7 +180,7 @@ export const DataProvider = ({ children }) => {
       setError(true);
       console.error('FAILED TO DELETE STUDENT', err);
     } finally {
-      setIsLoading(false);
+      //   setIsLoading(false);
     }
 
     //. RESET DATABASE TO ORIGINAL STATE
