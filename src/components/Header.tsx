@@ -23,9 +23,7 @@ export const Header = () => {
             <Logo />
           </div>
         </div>
-        <div className="mt-2">
-          <Banner />
-        </div>
+        <div className="mt-2">{/* <Banner /> */}</div>
         <hr className="mt-2 mx-auto" />
       </>
     </header>
